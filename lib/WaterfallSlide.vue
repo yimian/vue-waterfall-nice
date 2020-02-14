@@ -1,9 +1,9 @@
 <template>
   <div
     ref="waterfallSilde"
-    class="waterfall-silde"
     :style="style"
     :class="{ 'show': init }"
+    class="waterfall-silde"
   >
     <slot />
   </div>

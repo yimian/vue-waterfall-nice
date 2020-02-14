@@ -1,9 +1,9 @@
 <template>
   <div
     ref="waterfall"
-    class="waterfall"
     :class="{ resize, 'loading-show': (loading && !mount) || finished }"
     :style="waterfallStyle"
+    class="waterfall"
   >
     <slot />
     <div
@@ -12,8 +12,8 @@
       class="loading-warp"
     >
       <span
-        class="loading"
         :style="{ 'color': loadingColor }"
+        class="loading"
       >
         <i
           v-for="(item, index) in 12"
@@ -86,6 +86,11 @@ export default {
       type: String,
       default: '没有更多了~',
     },
+    // 超过总个数才开始渲染(慎用)
+    preloadNum: {
+      type: Number,
+      default: 0,
+    },
   },
   data() {
     return {
@@ -124,8 +129,10 @@ export default {
       if (!this.initData) {
         this.initWaterfall();
       }
-      this.mount = false;
-      this.waterFall(val);
+      if (val.length >= this.preloadNum) {
+        this.mount = false;
+        this.waterFall(val);
+      }
     },
     // 监听是否加载完成
     finished(val) {
@@ -184,7 +191,13 @@ export default {
             item.left = this.initData[0].left;
             this.initData[0].top += item.height + this.topInterval;
             item.init = true;
-            this.initData.sort((a, b) => a.top - b.top);
+            this.initData.sort((a, b) => {
+              if (a.top === b.top) {
+                return a.left - b.left;
+              }
+
+              return a.top - b.top;
+            });
           });
           this.childrens = [];
           this.waterfallBoxHeight = [...this.initData].pop().top;
