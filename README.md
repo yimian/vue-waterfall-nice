@@ -4,6 +4,12 @@
 
 本插件极大地借鉴了 [vue-waterfall-adaptive](https://github.com/geng452654716/vue-waterfall)
 
+## Install
+
+```
+npm i vue-waterfall-nice -s
+```
+
 ## ToDo
 
 - [ ] 完善 vue-waterfall-nice
